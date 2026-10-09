@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#efe8da" />
+    <title>+7 的小岛 · 自由行走测试</title>
+    <script type="module" crossorigin src="./assets/index-C807rq9S.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DtURR1RH.css">
+  </head>
+  <body class="intro-active">
+    <div id="app">
+      <canvas id="scene" aria-label="+7 的小岛三维场景"></canvas>
+
+      <div id="intro-clouds" class="intro-clouds" aria-hidden="true">
+        <div id="intro-cloud-left" class="intro-cloud intro-cloud-left"></div>
+        <div id="intro-cloud-right" class="intro-cloud intro-cloud-right"></div>
+      </div>
+
+      <section id="intro-overlay" class="intro-overlay" aria-labelledby="intro-title">
+        <div id="intro-content" class="intro-content">
+          <p class="eyebrow">WELCOME TO THE ISLAND</p>
+          <h1 id="intro-title">+7的小岛</h1>
+          <p class="intro-subtitle">有些经历，想带你走一遍。</p>
+          <p class="intro-copy">从校园到工作现场，从球场到镜头里的日常。欢迎登岛，认识一下我。</p>
+          <div class="intro-actions">
+            <button id="intro-start" class="primary-action" type="button" disabled>正在准备小岛…</button>
+            <button id="intro-skip" class="secondary-action" type="button" disabled>跳过开场动画</button>
+          </div>
+          <p id="intro-status" class="intro-status" role="status">正在载入岛屿与通行接口…</p>
+        </div>
+      </section>
+      <button id="intro-skip-active" class="intro-skip-active" type="button" hidden>跳过开场动画</button>
+
+      <div id="arrival-caption" class="arrival-caption" hidden>到啦，欢迎上岛。</div>
+
+      <header class="topbar app-chrome">
+        <div>
+          <p class="eyebrow">FREE WALK PROTOTYPE</p>
+          <h1>+7 的小岛</h1>
+        </div>
+        <div class="mode-actions">
+          <span id="mode-badge" class="badge">自由探索</span>
+          <button id="mode-toggle" type="button" hidden aria-hidden="true">观察模式已合并</button>
+        </div>
+      </header>
+
+      <aside class="help-card app-chrome">
+        <p><strong>WASD / 方向键</strong><span>移动</span></p>
+        <p><strong>E</strong><span>查看站点</span></p>
+        <p><strong>点击建筑</strong><span>直接查看</span></p>
+        <p><strong>滚轮 / 双指</strong><span>缩放画面</span></p>
+        <p><strong>Esc</strong><span>关闭面板</span></p>
+        <button id="return-dock" type="button">返回码头</button>
+      </aside>
+
+      <aside class="debug-card app-chrome">
+        <button id="debug-toggle" class="debug-title" type="button" aria-expanded="false">
+          <span>测试工具</span><span id="debug-chevron">＋</span>
+        </button>
+        <div id="debug-body" hidden>
+          <label><input id="show-nav" type="checkbox" /> 显示通行面</label>
+          <label><input id="show-col" type="checkbox" /> 显示碰撞体</label>
+          <label><input id="show-trg" type="checkbox" /> 显示触发范围</label>
+          <div id="asset-status" class="asset-status" aria-live="polite"></div>
+        </div>
+      </aside>
+
+      <div id="loading" class="loading-panel" role="status" hidden>
+        <div class="loading-dot"></div>
+        <p id="loading-title">正在载入整岛灰模</p>
+        <small id="loading-detail">正在检查 NAV / COL / TRG / SPAWN 接口…</small>
+      </div>
+
+      <div id="interaction-prompt" class="interaction-prompt" hidden>
+        <kbd>E</kbd><span id="prompt-text">查看站点</span>
+      </div>
+
+      <div id="mobile-controls" class="mobile-controls app-chrome" hidden aria-label="移动摇杆">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-knob" class="joystick-knob"></div>
+        </div>
+        <span>拖动行走</span>
+      </div>
+
+      <section id="station-panel" class="modal-backdrop" hidden aria-modal="true" role="dialog">
+        <article class="station-panel station-story-panel">
+          <button id="station-close" class="close-button" type="button" aria-label="关闭">×</button>
+          <h2 id="station-title" class="visually-hidden">站点</h2>
+          <div id="station-content"></div>
+        </article>
+      </section>
+
+      <section id="photo-lightbox" class="photo-lightbox" hidden aria-modal="true" role="dialog" aria-label="作品大图">
+        <button id="photo-lightbox-close" class="photo-lightbox-close" type="button" aria-label="关闭大图">×</button>
+        <button id="photo-lightbox-prev" class="photo-lightbox-nav photo-lightbox-prev" type="button" aria-label="上一张">‹</button>
+        <figure>
+          <img id="photo-lightbox-image" alt="" />
+          <figcaption id="photo-lightbox-caption"></figcaption>
+        </figure>
+        <button id="photo-lightbox-next" class="photo-lightbox-nav photo-lightbox-next" type="button" aria-label="下一张">›</button>
+      </section>
+
+      <section id="welcome-panel" class="modal-backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="welcome-title">
+        <article class="station-panel welcome-panel-card">
+          <p class="eyebrow">WELCOME ASHORE</p>
+          <h2 id="welcome-title">到啦，欢迎上岛。</h2>
+          <p>小岛不大，想先去哪儿都可以。走近一栋小楼，或直接点击建筑，就能打开一段我的故事。</p>
+          <p class="welcome-controls">WASD / 方向键或屏幕摇杆移动；滚轮或双指缩放；点击建筑即可查看。</p>
+          <button id="welcome-start" class="primary-action" type="button">开始探索</button>
+        </article>
+      </section>
+
+      <section id="fatal" class="fatal-panel" hidden role="alert">
+        <p class="eyebrow">ASSET VALIDATION FAILED</p>
+        <h2 id="fatal-title">场景初始化失败</h2>
+        <pre id="fatal-message"></pre>
+        <p class="fatal-meta">模型：<code id="fatal-model-url"></code></p>
+        <div class="fatal-actions">
+          <button id="fatal-copy" type="button">复制详情</button>
+          <button id="fatal-skip" type="button" hidden>跳过动画并尝试进入场景</button>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
